@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://src/Player.gd" type="Script" id=1]
 
@@ -25,7 +25,7 @@ params_point_size = 1.0
 params_billboard_mode = 0
 params_grow = false
 params_use_alpha_scissor = false
-albedo_color = Color( 0.11879, 0.675781, 0.166656, 1 )
+albedo_color = Color( 0.0398636, 0.859375, 0.0134277, 1 )
 metallic = 0.0
 metallic_specular = 0.5
 metallic_texture_channel = 0
@@ -56,6 +56,7 @@ _sections_unfolded = [ "Albedo" ]
 
 [sub_resource type="PlaneMesh" id=2]
 
+material = SubResource( 1 )
 custom_aabb = AABB( 0, 0, 0, 0, 0, 0 )
 size = Vector2( 2, 2 )
 subdivide_width = 0
@@ -65,7 +66,7 @@ subdivide_depth = 0
 
 points = PoolVector3Array( 1, 0, 1, -1, 0, 1, 1, 0, -1, -1, 0, -1 )
 
-[sub_resource type="SpatialMaterial" id=8]
+[sub_resource type="SpatialMaterial" id=4]
 
 render_priority = 0
 flags_transparent = false
@@ -88,9 +89,9 @@ params_point_size = 1.0
 params_billboard_mode = 0
 params_grow = false
 params_use_alpha_scissor = false
-albedo_color = Color( 1, 0.0117188, 0.0117188, 1 )
-metallic = 0.02
-metallic_specular = 0.5
+albedo_color = Color( 1, 0, 0, 1 )
+metallic = 0.0
+metallic_specular = 0.0
 metallic_texture_channel = 0
 roughness = 0.0
 roughness_texture_channel = 0
@@ -115,11 +116,11 @@ uv2_triplanar = false
 uv2_triplanar_sharpness = 1.0
 proximity_fade_enable = false
 distance_fade_enable = false
-_sections_unfolded = [ "Albedo", "Metallic" ]
+_sections_unfolded = [ "Albedo", "Emission", "Metallic" ]
 
-[sub_resource type="CapsuleMesh" id=7]
+[sub_resource type="CapsuleMesh" id=5]
 
-material = SubResource( 8 )
+material = SubResource( 4 )
 custom_aabb = AABB( 0, 0, 0, 0, 0, 0 )
 radius = 1.0
 mid_height = 1.0
@@ -131,13 +132,21 @@ rings = 8
 radius = 1.0
 height = 1.0
 
+[sub_resource type="CubeMesh" id=7]
+
+custom_aabb = AABB( 0, 0, 0, 0, 0, 0 )
+size = Vector3( 2, 2, 2 )
+subdivide_width = 0
+subdivide_height = 0
+subdivide_depth = 0
+
 [node name="Spatial" type="Spatial" index="0"]
 
-[node name="MeshInstance" type="MeshInstance" parent="." index="0"]
+[node name="Floor" type="MeshInstance" parent="." index="0"]
 
 transform = Transform( 20, 0, 0, 0, 1, 0, 0, 0, 20, 0, 0, 0 )
 layers = 1
-material_override = SubResource( 1 )
+material_override = null
 cast_shadow = 1
 extra_cull_margin = 0.0
 use_in_baked_light = false
@@ -148,28 +157,42 @@ lod_max_hysteresis = 0.0
 mesh = SubResource( 2 )
 skeleton = NodePath("..")
 material/0 = null
-_sections_unfolded = [ "Geometry", "Transform" ]
 
-[node name="StaticBody" type="StaticBody" parent="MeshInstance" index="0"]
+[node name="StaticBody" type="StaticBody" parent="Floor" index="0"]
 
 input_ray_pickable = true
 input_capture_on_drag = false
 collision_layer = 1
 collision_mask = 1
-friction = 0.3
+friction = 1.0
 bounce = 0.0
 constant_linear_velocity = Vector3( 0, 0, 0 )
 constant_angular_velocity = Vector3( 0, 0, 0 )
-_sections_unfolded = [ "Transform" ]
 
-[node name="CollisionShape" type="CollisionShape" parent="MeshInstance/StaticBody" index="0"]
+[node name="CollisionShape" type="CollisionShape" parent="Floor/StaticBody" index="0"]
 
 shape = SubResource( 3 )
 disabled = false
 
-[node name="Player" type="KinematicBody" parent="." index="1"]
+[node name="Camera" type="Camera" parent="." index="1"]
 
-transform = Transform( 1, 0, 0, 0, -4.37114e-008, -1, 0, 1, -4.37114e-008, 0, 3.89392, 0 )
+transform = Transform( 0.707107, 0.353553, -0.612372, -3.90799e-014, 0.866025, 0.5, 0.707107, -0.353553, 0.612372, -12, 15.0125, 12 )
+keep_aspect = 1
+cull_mask = 1048575
+environment = null
+h_offset = 0.0
+v_offset = 0.0
+doppler_tracking = 0
+projection = 0
+current = false
+fov = 70.0
+size = 1.0
+near = 0.05
+far = 100.0
+
+[node name="Player" type="KinematicBody" parent="." index="2"]
+
+transform = Transform( 1, 0, 0, 0, -4.37114e-008, -1, 0, 1, -4.37114e-008, 0, 3.01252, 0 )
 input_ray_pickable = true
 input_capture_on_drag = false
 collision_layer = 1
@@ -184,24 +207,29 @@ collision/safe_margin = 0.001
 script = ExtResource( 1 )
 _sections_unfolded = [ "Transform" ]
 
-[node name="Camera" type="Camera" parent="Player" index="0"]
+[node name="MeshInstance" type="MeshInstance" parent="Player" index="0"]
 
-transform = Transform( 1, 0, 0, 0, -0.5, 0.866025, 0, -0.866025, -0.5, 0, 14.4929, -11.2338 )
-keep_aspect = 1
-cull_mask = 1048575
-environment = null
-h_offset = 0.0
-v_offset = 0.0
-doppler_tracking = 0
-projection = 0
-current = false
-fov = 70.0
-size = 1.0
-near = 0.05
-far = 100.0
+layers = 1
+material_override = null
+cast_shadow = 1
+extra_cull_margin = 0.0
+use_in_baked_light = false
+lod_min_distance = 0.0
+lod_min_hysteresis = 0.0
+lod_max_distance = 0.0
+lod_max_hysteresis = 0.0
+mesh = SubResource( 5 )
+skeleton = NodePath("..")
+material/0 = null
 
-[node name="MeshInstance" type="MeshInstance" parent="Player" index="1"]
+[node name="CollisionShape" type="CollisionShape" parent="Player" index="1"]
 
+shape = SubResource( 6 )
+disabled = false
+
+[node name="MeshInstance2" type="MeshInstance" parent="Player" index="2"]
+
+transform = Transform( 0.4, 0, 0, 0, 0.2, 0, 0, 0, 0.1, 0, 1, -1 )
 layers = 1
 material_override = null
 cast_shadow = 1
@@ -214,18 +242,14 @@ lod_max_hysteresis = 0.0
 mesh = SubResource( 7 )
 skeleton = NodePath("..")
 material/0 = null
+_sections_unfolded = [ "Transform" ]
 
-[node name="CollisionShape" type="CollisionShape" parent="Player" index="2"]
+[node name="DirectionalLight" type="DirectionalLight" parent="." index="3"]
 
-shape = SubResource( 6 )
-disabled = false
-
-[node name="DirectionalLight" type="DirectionalLight" parent="." index="2"]
-
-transform = Transform( 0.866025, -0.395563, 0.305827, 0, 0.611654, 0.791126, -0.5, -0.685135, 0.529707, 10, 23.1524, 16.1517 )
+transform = Transform( -0.5, 0.55667, -0.663414, 0, 0.766044, 0.642788, 0.866025, 0.321394, -0.383022, -17.0537, 35.7007, -26.2351 )
 layers = 1
-light_color = Color( 0.96875, 1, 0, 1 )
-light_energy = 1.08
+light_color = Color( 1, 1, 1, 1 )
+light_energy = 1.0
 light_indirect_energy = 1.0
 light_negative = false
 light_specular = 0.5
@@ -233,7 +257,7 @@ light_bake_mode = 1
 light_cull_mask = -1
 shadow_enabled = true
 shadow_color = Color( 0, 0, 0, 1 )
-shadow_bias = 0.81
+shadow_bias = 0.1
 shadow_contact = 0.0
 shadow_reverse_cull_face = false
 editor_only = false
@@ -246,6 +270,6 @@ directional_shadow_normal_bias = 0.8
 directional_shadow_bias_split_scale = 0.25
 directional_shadow_depth_range = 0
 directional_shadow_max_distance = 200.0
-_sections_unfolded = [ "Light", "Shadow" ]
+_sections_unfolded = [ "Shadow" ]
 
 

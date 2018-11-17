@@ -4,7 +4,7 @@
 [ext_resource path="res://assets/mesh_libraries/gridmap_tyles.tres" type="MeshLibrary" id=2]
 [ext_resource path="res://assets/env/default_env.tres" type="Environment" id=3]
 
-[node name="root" type="Node" index="0"]
+[node name="root" type="Node"]
 
 [node name="game_singleton" type="Node" parent="." index="0"]
 
@@ -58,7 +58,7 @@ environment = ExtResource( 3 )
 
 [node name="Camera" type="Camera" parent="." index="4"]
 
-transform = Transform( 1, 0, 0, 0, -1.62921e-07, 1, 0, -1, -1.62921e-07, 0, 100, 0 )
+transform = Transform( 1, 0, 0, 0, -1.62921e-007, 1, 0, -1, -1.62921e-007, 0, 100, 0 )
 keep_aspect = 1
 cull_mask = 1048575
 environment = null
