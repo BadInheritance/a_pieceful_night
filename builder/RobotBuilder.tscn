@@ -1,0 +1,275 @@
+[gd_scene load_steps=13 format=2]
+
+[ext_resource path="res://builder/RobotBuilder.gd" type="Script" id=1]
+[ext_resource path="res://builder/Building area.tscn" type="PackedScene" id=2]
+[ext_resource path="res://src/RobotSlot.gd" type="Script" id=3]
+[ext_resource path="res://builder/Target object.gd" type="Script" id=4]
+[ext_resource path="res://builder/LibraryList.gd" type="Script" id=5]
+[ext_resource path="res://fonts/Iosevka.tres" type="DynamicFont" id=6]
+[ext_resource path="res://builder/Structure list.gd" type="Script" id=7]
+[ext_resource path="res://builder/hand_glove.png" type="Texture" id=8]
+[ext_resource path="res://builder/Slot pointer.gd" type="Script" id=9]
+[ext_resource path="res://src/Library.gd" type="Script" id=10]
+
+[sub_resource type="ProceduralSky" id=1]
+
+radiance_size = 4
+sky_top_color = Color( 1, 1, 1, 1 )
+sky_horizon_color = Color( 0.556863, 0.823529, 0.909804, 1 )
+sky_curve = 0.25
+sky_energy = 1.0
+ground_bottom_color = Color( 0.101961, 0.145098, 0.188235, 1 )
+ground_horizon_color = Color( 0.482353, 0.788235, 0.952941, 1 )
+ground_curve = 0.01
+ground_energy = 1.0
+sun_color = Color( 1, 1, 1, 1 )
+sun_latitude = 35.0
+sun_longitude = 0.0
+sun_angle_min = 1.0
+sun_angle_max = 100.0
+sun_curve = 0.05
+sun_energy = 16.0
+texture_size = 2
+_sections_unfolded = [ "Sky" ]
+
+[sub_resource type="Environment" id=2]
+
+background_mode = 2
+background_sky = SubResource( 1 )
+background_sky_custom_fov = 0.0
+background_color = Color( 0, 0, 0, 1 )
+background_energy = 1.0
+background_canvas_max_layer = 0
+ambient_light_color = Color( 0, 0, 0, 1 )
+ambient_light_energy = 1.0
+ambient_light_sky_contribution = 1.0
+fog_enabled = false
+fog_color = Color( 0.5, 0.6, 0.7, 1 )
+fog_sun_color = Color( 1, 0.9, 0.7, 1 )
+fog_sun_amount = 0.0
+fog_depth_enabled = true
+fog_depth_begin = 10.0
+fog_depth_curve = 1.0
+fog_transmit_enabled = false
+fog_transmit_curve = 1.0
+fog_height_enabled = false
+fog_height_min = 0.0
+fog_height_max = 100.0
+fog_height_curve = 1.0
+tonemap_mode = 0
+tonemap_exposure = 1.0
+tonemap_white = 1.0
+auto_exposure_enabled = false
+auto_exposure_scale = 0.4
+auto_exposure_min_luma = 0.05
+auto_exposure_max_luma = 8.0
+auto_exposure_speed = 0.5
+ss_reflections_enabled = false
+ss_reflections_max_steps = 64
+ss_reflections_fade_in = 0.15
+ss_reflections_fade_out = 2.0
+ss_reflections_depth_tolerance = 0.2
+ss_reflections_roughness = true
+ssao_enabled = false
+ssao_radius = 1.0
+ssao_intensity = 1.0
+ssao_radius2 = 0.0
+ssao_intensity2 = 1.0
+ssao_bias = 0.01
+ssao_light_affect = 0.0
+ssao_color = Color( 0, 0, 0, 1 )
+ssao_quality = 0
+ssao_blur = 3
+ssao_edge_sharpness = 4.0
+dof_blur_far_enabled = false
+dof_blur_far_distance = 10.0
+dof_blur_far_transition = 5.0
+dof_blur_far_amount = 0.1
+dof_blur_far_quality = 1
+dof_blur_near_enabled = false
+dof_blur_near_distance = 2.0
+dof_blur_near_transition = 1.0
+dof_blur_near_amount = 0.1
+dof_blur_near_quality = 1
+glow_enabled = false
+glow_levels/1 = false
+glow_levels/2 = false
+glow_levels/3 = true
+glow_levels/4 = false
+glow_levels/5 = true
+glow_levels/6 = false
+glow_levels/7 = false
+glow_intensity = 0.8
+glow_strength = 1.0
+glow_bloom = 0.0
+glow_blend_mode = 2
+glow_hdr_threshold = 1.0
+glow_hdr_scale = 2.0
+glow_bicubic_upscale = false
+adjustment_enabled = false
+adjustment_brightness = 1.0
+adjustment_contrast = 1.0
+adjustment_saturation = 1.0
+_sections_unfolded = [ "Background" ]
+
+[node name="Robot builder" type="WorldEnvironment" index="0"]
+
+environment = SubResource( 2 )
+script = ExtResource( 1 )
+library_list_path = NodePath("CanvasLayer/Library list")
+structure_list_path = NodePath("CanvasLayer/Structure list")
+
+[node name="Preview env" parent="." index="0" instance=ExtResource( 2 )]
+
+[node name="Floor" parent="Preview env" index="0"]
+
+_sections_unfolded = [ "Transform", "material" ]
+
+[node name="slot-Robot base" parent="Preview env" index="1"]
+
+script = ExtResource( 3 )
+
+[node name="Target object" type="Spatial" parent="." index="1"]
+
+script = ExtResource( 4 )
+_sections_unfolded = [ "Transform" ]
+structure_list_path = NodePath("../CanvasLayer/Structure list")
+
+[node name="Camera target" type="Spatial" parent="Target object" index="0"]
+
+transform = Transform( 0.662204, 0.260885, -0.702433, -6.0537e-08, 0.937428, 0.348163, 0.749315, -0.230557, 0.620772, -3.08224, 1.9971, 3.29456 )
+_sections_unfolded = [ "Transform", "Visibility" ]
+
+[node name="Camera" type="InterpolatedCamera" parent="." index="2"]
+
+transform = Transform( 0.662204, 0.260885, -0.702432, 1.63912e-07, 0.937427, 0.348162, 0.749314, -0.230557, 0.620773, -3.08224, 1.9971, 3.29456 )
+keep_aspect = 1
+cull_mask = 1048575
+environment = null
+h_offset = 0.0
+v_offset = 0.0
+doppler_tracking = 0
+projection = 0
+current = false
+fov = 70.0
+size = 1.0
+near = 0.05
+far = 100.0
+target = NodePath("../Target object/Camera target")
+speed = 3.0
+enabled = true
+_sections_unfolded = [ "Transform" ]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." index="3"]
+
+layer = 1
+offset = Vector2( 0, 0 )
+rotation = 0.0
+scale = Vector2( 1, 1 )
+transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+
+[node name="Library list" type="ItemList" parent="CanvasLayer" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 189.0
+margin_top = 40.0
+margin_right = 355.0
+margin_bottom = 176.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = true
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+items = [  ]
+select_mode = 0
+allow_reselect = false
+icon_mode = 1
+fixed_icon_size = Vector2( 0, 0 )
+script = ExtResource( 5 )
+_sections_unfolded = [ "Theme" ]
+libraryPath = NodePath("../../Library")
+
+[node name="Structure list" type="ItemList" parent="CanvasLayer" index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 42.0
+margin_top = 37.0
+margin_right = 158.0
+margin_bottom = 262.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = true
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+custom_fonts/font = ExtResource( 6 )
+items = [  ]
+select_mode = 0
+allow_reselect = false
+icon_mode = 1
+fixed_icon_size = Vector2( 0, 0 )
+script = ExtResource( 7 )
+_sections_unfolded = [ "Columns", "Icon", "Margin", "Theme", "custom_fonts", "custom_styles" ]
+robot_base_path = NodePath("../../Preview env/slot-Robot base")
+
+[node name="Button" type="Button" parent="CanvasLayer" index="2"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 189.0
+margin_top = 184.0
+margin_right = 264.0
+margin_bottom = 214.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "Attach"
+flat = false
+align = 1
+
+[node name="Hand pointer" type="Sprite" parent="CanvasLayer" index="3"]
+
+visible = false
+position = Vector2( 490.414, 325.709 )
+scale = Vector2( 0.122093, 0.122093 )
+z_index = -1
+texture = ExtResource( 8 )
+script = ExtResource( 9 )
+_sections_unfolded = [ "Animation", "Offset", "Region", "Transform", "Visibility", "Z Index" ]
+structure_list_path = NodePath("../Structure list")
+
+[node name="Library" type="Node" parent="." index="4"]
+
+script = ExtResource( 10 )
+
+[connection signal="structure_changed" from="." to="CanvasLayer/Structure list" method="read_structure"]
+
+[connection signal="item_selected" from="CanvasLayer/Structure list" to="Target object" method="_on_Structure_list_item_selected"]
+
+[connection signal="item_selected" from="CanvasLayer/Structure list" to="CanvasLayer/Hand pointer" method="_on_Structure_list_item_selected"]
+
+[connection signal="nothing_selected" from="CanvasLayer/Structure list" to="CanvasLayer/Hand pointer" method="_on_Structure_list_nothing_selected"]
+
+[connection signal="pressed" from="CanvasLayer/Button" to="." method="_attach_piece"]
+
+
+[editable path="Preview env"]
