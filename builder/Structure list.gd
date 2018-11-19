@@ -23,10 +23,15 @@ func read_structure():
 	self.clear()
 	
 	var slots = get_slots()
+	var slot_icon = preload("res://builder/cube.png")
 	
 	var i = 0
 	for slot in slots:
-		self.add_item(slot.name)
+		var text = " [  FREE  ]"
+		if slot.get_child_count() > 0:
+			text = "  <used>"
+
+		self.add_item(text, slot_icon)  # slot.name)
 		self.set_item_metadata(i, slot)
 		i += 1
 

@@ -142,7 +142,7 @@ _sections_unfolded = [ "Transform", "Visibility" ]
 
 [node name="Camera" type="InterpolatedCamera" parent="." index="2"]
 
-transform = Transform( 0.662204, 0.260885, -0.702432, 1.63912e-07, 0.937427, 0.348162, 0.749314, -0.230557, 0.620773, -3.08224, 1.9971, 3.29456 )
+transform = Transform( 0.662204, 0.260885, -0.702432, 8.94063e-08, 0.937427, 0.348162, 0.749314, -0.230557, 0.620773, -3.08224, 1.9971, 3.29456 )
 keep_aspect = 1
 cull_mask = 1048575
 environment = null
